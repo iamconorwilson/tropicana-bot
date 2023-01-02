@@ -1,0 +1,32 @@
+{
+    "name": "tropicana-bot",
+    "version": "1.0.0",
+    "description": "A dumb Discord audio bot that plays Club Tropicana by Wham!.",
+    "main": "index.js",
+    "engines": {
+        "node": "16.x"
+    },
+    "scripts": {
+        "start": "node index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/iamconorwilson/tropicana-bot.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/iamconorwilson/tropicana-bot/issues"
+    },
+    "homepage": "https://github.com/iamconorwilson/tropicana-bot#readme",
+    "dependencies": {
+        "@discordjs/voice": "^0.14.0",
+        "discord.js": "^14.7.1",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "libsodium-wrappers": "^0.7.10",
+        "ytdl-core": "^4.11.2"
+    }
+}
