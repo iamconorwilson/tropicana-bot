@@ -13,7 +13,7 @@ const CHANNEL = process.env.CHANNEL_ID
 const STATUS = "🌴 Club Tropicana 🌴"
 const URL = "https://www.youtube.com/watch?v=zEUEyDs0oKo";
 
-let connection = {};
+let connection = null;
 
 async function ready() {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -75,9 +75,8 @@ client.on('ready', ready);
 client.login(TOKEN)
 
 app.get('/', (req, res) => {
-    console.log('Woke up!');
+    console.log('Ping received!');
     res.send({ status: 'ok' });
-    res.sendStatus(200);
 });
 
 app.listen(process.env.PORT || 3000, () => {
