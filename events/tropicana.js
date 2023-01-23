@@ -20,8 +20,10 @@ exports.setupEventListener = (client, context) => {
         if (newState.channelId === channelId || oldState.channelId === channelId) {
             const channel = client.channels.cache.get(channelId) || await client.channels.fetch(channelId)
             if (!channel) return log({ status: 'error', message: 'Channel not found!' });
+            //if bot action, return
             if (newState.id === client.user.id) return;
-            if (audio.isPlaying()) return;
+            //if audio is playing and bot is not alone in channel, return
+            if (audio.isPlaying() && channel.members.size > 1) return;
 
 
             // USER JOINED CHANNEL
