@@ -21,6 +21,8 @@ exports.setupEventListener = (client, context) => {
             const channel = client.channels.cache.get(channelId) || await client.channels.fetch(channelId)
             if (!channel) return log({ status: 'error', message: 'Channel not found!' });
             if (newState.id === client.user.id) return;
+            if (audio.isPlaying()) return;
+
 
             // USER JOINED CHANNEL
             if (newState.channelId === channelId) {

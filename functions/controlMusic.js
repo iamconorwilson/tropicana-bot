@@ -33,6 +33,9 @@ class audioPlayer {
             player.stop();
         }
     }
+    isPlaying() {
+        return this.player.state.status === AudioPlayerStatus.Playing;
+    }
 }
 
 
