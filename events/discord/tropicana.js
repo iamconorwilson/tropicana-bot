@@ -1,7 +1,6 @@
 // plays Club Tropicana by Wham! in a voice channel when someone joins
-const { joinVoiceChannel, createAudioPlayer } = require('@discordjs/voice');
-const path = require('path');
-const { audioPlayer } = require(path.resolve('./functions/controlMusic'));
+import { joinVoiceChannel, createAudioPlayer } from '@discordjs/voice';
+import { audioPlayer } from '../../functions/controlMusic.js';
 
 const channelId = "1059562088638455878";
 const url = "https://www.youtube.com/watch?v=zEUEyDs0oKo";
@@ -13,8 +12,9 @@ const log = (message) => {
     console.log(`[tropicana.js]: ${message}`);
   };
 
+let connection;
 
-exports.setupEventListener = (client, context) => {
+export function setupEventListener(client) {
     client.on('voiceStateUpdate', async (oldState, newState) => {
         // tropicana.js
         if (newState.channelId === channelId || oldState.channelId === channelId) {
@@ -24,7 +24,6 @@ exports.setupEventListener = (client, context) => {
             if (newState.id === client.user.id) return;
             //if audio is playing and bot is not alone in channel, return
             if (audio.isPlaying() && channel.members.size > 1) return;
-
 
             // USER JOINED CHANNEL
             if (newState.channelId === channelId) {
@@ -47,4 +46,4 @@ exports.setupEventListener = (client, context) => {
             }
         }
     })
-};
+}

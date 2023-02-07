@@ -1,16 +1,14 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const url = require('url');
-const path = require('path');
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import { parse } from 'url';
+import { extname } from 'path';
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('puzzle')
-        .setDescription('Get a link to a puzzle from jigsawexplorer.com')
-        .addStringOption(option => option.setName('url').setDescription('The URL of the puzzle you want to link').setRequired(true)),
-    async execute(interaction) {
-        await handler(interaction);
-    },
-};
+export const data = new SlashCommandBuilder()
+    .setName('puzzle')
+    .setDescription('Get a link to a puzzle from jigsawexplorer.com')
+    .addStringOption(option => option.setName('url').setDescription('The URL of the puzzle you want to link').setRequired(true));
+export async function execute(interaction) {
+    await handler(interaction);
+}
 
 const handler = async (interaction) => {
     const url = interaction.options.getString('url');
@@ -30,9 +28,9 @@ const handler = async (interaction) => {
 }
 
 const checkUrl = (inputUrl) => {
-    const parsedUrl = url.parse(inputUrl);
+    const parsedUrl = parse(inputUrl);
     // check that the URL has a valid file extension (e.g. ".jpg", ".png")
-    const fileExtension = path.extname(parsedUrl.pathname);
+    const fileExtension = extname(parsedUrl.pathname);
     if (!fileExtension || !['.jpg', '.png'].includes(fileExtension)) {
         return false;
     }

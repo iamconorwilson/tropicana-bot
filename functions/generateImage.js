@@ -1,7 +1,7 @@
-const { createCanvas, loadImage } = require('canvas');
+import { createCanvas, loadImage } from 'canvas';
 
 
-exports.generateImage = async (options) => {
+export async function generateImage(options) {
 
     const img = await loadImage(options.image);
 

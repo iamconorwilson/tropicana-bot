@@ -1,0 +1,46 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+
+class Task {
+    constructor(context) {
+        this.twitch = context.twitch;
+        this.discord = context.discord;
+        this.live = false;
+
+        this.execute = this.execute.bind(this);
+    }
+
+    schedule = '*/5 * * * *';
+
+    execute = async () => {
+        log('Checking if stream is live');
+        const twitch = this.twitch;
+        const discord = this.discord;
+    
+        const userId = process.env.TWITCH_USER_ID;
+
+        const channelId = '1060328523740495902'
+
+        const stream = await twitch.streams.getStreamByUserId(userId);
+
+        if (stream && !this.live) {
+            log(`${stream.userDisplayName} is live`);
+            const channel = discord.channels.cache.get(channelId) || await discord.channels.fetch(channelId)
+            channel.send(`@everyone ${stream.userDisplayName} is live on Twitch! https://twitch.tv/${stream.userName}`);
+            this.live = true;
+        } else if (!stream) {
+            this.live = false;
+            log('Stream is offline')
+        }
+        
+    }
+}
+
+
+const log = (message) => {
+    if (typeof message === 'object') message = JSON.stringify(message);
+    console.log(`[twitchLive.js]: ${message}`);
+};
+  
+export { Task };

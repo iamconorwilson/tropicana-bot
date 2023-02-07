@@ -1,11 +1,12 @@
-const { Events } = require('discord.js');
+import { Events } from 'discord.js';
 
-exports.setupEventListener = (client, context) => {
+export function setupEventListener(client) {
     client.on(Events.InteractionCreate, async interaction => {
 
         if (!interaction.isChatInputCommand()) return;
-
+        
         const command = interaction.client.commands.get(interaction.commandName);
+
 
         if (!command) {
             console.error(`No command matching ${interaction.commandName} was found.`);
@@ -22,7 +23,7 @@ exports.setupEventListener = (client, context) => {
             await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
         }
     });
-};
+}
 
 const log = (message) => {
     if (typeof message === 'object') message = JSON.stringify(message);

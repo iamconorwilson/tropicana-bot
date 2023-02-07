@@ -1,22 +1,22 @@
-const fs = require('fs');
-const path = require('path');
-const { Collection } = require('discord.js');
+import { readdirSync } from 'fs';
+import { resolve, join } from 'path';
+import { Collection } from 'discord.js';
 
-exports.registerCommands = (client, dir = "./commands") => {
+export async function registerCommands(client, dir = "./commands") {
     client.commands = new Collection();
 
-    const commandsPath = path.resolve(dir);
-    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-
-    for (const file of commandFiles) {
-        const filePath = path.join(commandsPath, file);
-        const command = require(filePath);
-        // Set a new item in the Collection with the key as the command name and the value as the exported module
+    const commandsPath = resolve(dir);
+    const commandFiles = readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+    
+    await Promise.all(commandFiles.map(async file => {
+        const filePath = '../commands/' + file;
+        const command = await import(filePath);
         if ('data' in command && 'execute' in command) {
             client.commands.set(command.data.name, command);
             console.log(`Registered Command: ${file}`);
         } else {
             console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
         }
-    }
+    }));
+
 }

@@ -1,28 +1,26 @@
-const { SlashCommandBuilder } = require('discord.js');
-const path = require('path');
-const fs = require('fs');
-const { generateImage } = require(path.resolve('./functions/generateImage'));
+import { SlashCommandBuilder } from 'discord.js';
+import { resolve, join } from 'path';
+import { writeFile } from 'fs';
+const { generateImage } = await import('../functions/generateImage.js');
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('goodorbad')
-        .setDescription('Find out if something is a good thing or a bad thing')
-        .addStringOption(option => option.setName('text').setDescription('Text to be checked').setRequired(true)),
-    async execute(interaction) {
-        await handler(interaction);
-    },
-};
+export const data = new SlashCommandBuilder()
+    .setName('goodorbad')
+    .setDescription('Find out if something is a good thing or a bad thing')
+    .addStringOption(option => option.setName('text').setDescription('Text to be checked').setRequired(true));
+export async function execute(interaction) {
+    await handler(interaction);
+}
 
 const handler = async (interaction) => {
     const text = interaction.options.getString('text');
 
-    const imgPath = path.resolve('./assets/goodbad');
+    const imgPath = resolve('./assets/goodbad');
 
     //randomly select an image from the assets folder
     const goodbad = Math.floor(Math.random() * 2) + 1;
     const imgFile = goodbad === 1 ? 'good.jpg' : 'bad.jpg';
 
-    const image = path.join(imgPath, imgFile);
+    const image = join(imgPath, imgFile);
 
     const options = {
         image: image,
@@ -44,10 +42,10 @@ const handler = async (interaction) => {
 
     //fs save buffer to file
     
-    const savePath = path.resolve(__dirname, '../assets/goodbad');
-    const saveFile = path.join(savePath, 'test.png');
+    const savePath = resolve('./assets/goodbad');
+    const saveFile = join(savePath, 'test.png');
 
-    await fs.writeFile(saveFile, img, function (err) {
+    await writeFile(saveFile, img, function (err) {
             if (err) throw err;
     });
     

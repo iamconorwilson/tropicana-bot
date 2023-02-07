@@ -1,18 +1,16 @@
-const { SlashCommandBuilder } = require('discord.js');
-const path = require('path');
+import { SlashCommandBuilder } from 'discord.js';
+import { resolve } from 'path';
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('pp')
-        .setDescription('pp'),
-    async execute(interaction) {
-        await handler(interaction);
-    },
-};
+export const data = new SlashCommandBuilder()
+    .setName('pp')
+    .setDescription('pp');
+export async function execute(interaction) {
+    await handler(interaction);
+}
 
 const handler = async (interaction) => {
 
-    const img = path.resolve('./assets/pp/pp.gif');
+    const img = resolve('./assets/pp/pp.gif');
 
     log('Sending pp.gif');
     //return puzzle link

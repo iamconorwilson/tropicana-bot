@@ -1,5 +1,5 @@
-const { AudioPlayerStatus, createAudioResource } = require('@discordjs/voice');
-const ytdl = require('ytdl-core');
+import { AudioPlayerStatus, createAudioResource } from '@discordjs/voice';
+import ytdl from 'ytdl-core';
 
 class audioPlayer {
     constructor(context) {
@@ -40,4 +40,5 @@ class audioPlayer {
 
 
 
-exports.audioPlayer = audioPlayer;
+const _audioPlayer = audioPlayer;
+export { _audioPlayer as audioPlayer };

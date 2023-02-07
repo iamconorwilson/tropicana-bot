@@ -1,22 +1,32 @@
-const { Client, GatewayIntentBits } = require('discord.js');
-const { setupListeners } = require('./functions/setupListeners');
-const { registerCommands } = require('./functions/registerCommands');
+import { auth } from './auth/auth.js';
+import { setupDiscordListeners } from './functions/setupDiscordListeners.js';
+import { setupTwitchListeners } from './functions/setupTwitchListeners.js';
+import { registerCommands } from './functions/registerCommands.js';
+import { scheduleTasks } from './functions/scheduleTasks.js';
 
-const client = new Client({ intents: [GatewayIntentBits.GuildVoiceStates] });
+// const client = new Client({ intents: [GatewayIntentBits.GuildVoiceStates] });
 
-require('dotenv').config();
+// import * as dotenv from 'dotenv';
+// dotenv.config()
 
-const TOKEN = process.env.CLIENT_TOKEN
-const STATUS = "🌴 Club Tropicana 🌴"
+// const TOKEN = process.env.CLIENT_TOKEN
+// const STATUS = "🌴 Club Tropicana 🌴"
 
+const context = await auth();
 
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setPresence({ activities: [{ name: STATUS }], status: 'online' });
-});
+// console.log(context);
+
+// client.on('ready', () => {
+//     console.log(`Logged in as ${client.user.tag}!`);
+//     client.user.setPresence({ activities: [{ name: STATUS }], status: 'online' });
+// });
     
-setupListeners(client);
+setupDiscordListeners(context.discord);
 
-registerCommands(client);
+setupTwitchListeners(context);
 
-client.login(TOKEN)
+registerCommands(context.discord);
+
+scheduleTasks(context);
+
+// client.login(TOKEN)

@@ -1,21 +1,22 @@
-const { REST, Routes } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
+import { REST, Routes } from 'discord.js';
+import { readdirSync } from 'fs';
+import { resolve } from 'path';
 
-require('dotenv').config();
+import * as dotenv from 'dotenv';
+dotenv.config()
 
-const token = process.env.CLIENT_TOKEN
-const clientId = process.env.CLIENT_ID
+const token = process.env.DISCORD_CLIENT_TOKEN
+const clientId = process.env.DISCORD_CLIENT_ID
 
 
 const commands = [];
 // Grab all the command files from the commands directory you created earlier
-const commandFiles = fs.readdirSync(path.resolve('./commands')).filter(file => file.endsWith('.js'));
+const commandFiles = readdirSync(resolve('./commands')).filter(file => file.endsWith('.js'));
 
 // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 for (const file of commandFiles) {
     console.log(`Loading Command: ${file}`);
-	const command = require(path.resolve(`./commands/${file}`));
+	const command = await import(`../commands/${file}`);
 	commands.push(command.data.toJSON());
 }
 
