@@ -16,7 +16,7 @@ export async function setupEventListener(context, listener) {
 }
 
 async function sendMessage(discord, event) {
-    const channelId = '1060328523740495902'
+    const channelId = '1073691933295267992'
 
     const channel = discord.channels.cache.get(channelId) || await discord.channels.fetch(channelId)
     channel.send(`@everyone ${event.broadcasterDisplayName} is live on Twitch! https://twitch.tv/${event.broadcasterName}`);
