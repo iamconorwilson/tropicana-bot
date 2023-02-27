@@ -16,7 +16,12 @@ const commandFiles = readdirSync(resolve('./commands')).filter(file => file.ends
 // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 for (const file of commandFiles) {
     console.log(`Loading Command: ${file}`);
-	const command = await import(`../commands/${file}`);
+    let command = await import(`../commands/${file}`);
+    //if command has a class, call constructor with context
+    if (command.Command) {
+        command = new command.Command({});
+    }
+
 	commands.push(command.data.toJSON());
 }
 

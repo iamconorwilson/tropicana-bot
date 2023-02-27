@@ -1,4 +1,5 @@
 import cron from 'node-cron';
+import cronstrue from 'cronstrue';
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
 
@@ -16,9 +17,14 @@ export const scheduleTasks = async (context, dir = './scheduled') => {
 
         if ('schedule' in task && 'execute' in task) {
             cron.schedule(task.schedule, task.execute);
-            console.log(`Scheduled Task: ${file}`);
+            console.log(`Scheduled Task: ${file} to run ${cronToString(task.schedule).toLowerCase()}`);
         } else {
             console.log(`[WARNING] The task at ${filePath} is missing a required "schedule" or "execute" property.`);
         }
     }))
+}
+
+
+const cronToString = (cron) => {
+    return cronstrue.toString(cron, { use24HourTimeFormat: true });
 }
