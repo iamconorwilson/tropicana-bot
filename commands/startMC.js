@@ -59,6 +59,7 @@ const handler = async (interaction, context) => {
             await rcon.connect();
         } catch (err) {
             //timeout
+            console.log('timeout', count)
         }
         await new Promise(resolve => setTimeout(resolve, 10000));
         check++;
