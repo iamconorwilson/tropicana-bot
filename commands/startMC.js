@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import { Rcon } from 'rcon-client';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -45,7 +46,15 @@ const handler = async (interaction, context) => {
     let check = 0;
     let status = 'pending';
 
-    const rcon = context.rcon;
+    //wait for 2 mins
+    console.log('Waiting 2 mins for EC2 startup')
+    await new Promise(resolve => setTimeout(resolve, 120000));
+
+    const rcon = new Rcon({
+        host: process.env.MC_HOST,
+        port: process.env.MC_PORT,
+        password: process.env.MC_PASSWORD
+    });
 
     rcon.on('connect', () => {
         status = 'running';

@@ -1,11 +1,16 @@
 import * as dotenv from 'dotenv';
+import { Rcon } from 'rcon-client';
 dotenv.config();
 
 
 class Task {
     constructor(context) {
         this.ec2 = context.awsEC2;
-        this.rcon = context.rcon;
+        this.rcon = new Rcon({
+            host: process.env.MC_HOST,
+            port: process.env.MC_PORT,
+            password: process.env.MC_PASSWORD
+        });
 
         this.check = 0;
 

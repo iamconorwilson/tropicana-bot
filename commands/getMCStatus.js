@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import { Rcon } from 'rcon-client';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -51,7 +52,12 @@ const handler = async (interaction, context) => {
 
     //if instance is running, check if rcon is connected
 
-    const rcon = context.rcon;
+    const rcon = new Rcon({
+        host: process.env.MC_HOST,
+        port: process.env.MC_PORT,
+        password: process.env.MC_PASSWORD
+    });
+
     let connect;
 
     try {
