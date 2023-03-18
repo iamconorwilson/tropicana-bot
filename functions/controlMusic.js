@@ -1,4 +1,6 @@
 import { AudioPlayerStatus, createAudioResource } from '@discordjs/voice';
+import { createReadStream } from 'fs';
+import { resolve } from 'path';
 import ytdl from 'ytdl-core';
 
 class audioPlayer {
@@ -6,6 +8,7 @@ class audioPlayer {
         this.player = context.player;
         this.connection = context.connection;
         this.url = context.url;
+        this.type = context.type;
     }
 
     setConnection(connection) {
@@ -13,12 +16,12 @@ class audioPlayer {
     }
 
     async controlMusic(state) {
-        const { player, connection, url } = this;
+        const { player, connection, url, type } = this;
 
         if (!state || !player) return;
         
         if (state === 'playing') {
-            const stream = createAudioResource(ytdl(url, { filter: 'audioonly' }));
+            const stream = resourceCreate(url, type);
             player.play(stream);
             connection.subscribe(player);
     
@@ -38,6 +41,17 @@ class audioPlayer {
     }
 }
 
+
+function resourceCreate(resource, type) {
+    if (type === 'youtube') {
+        return createAudioResource(ytdl(resource, { filter: 'audioonly' }));
+    } else if (type === 'file') {
+        return createAudioResource(createReadStream(resolve(resource)));
+    } else {
+        throw new Error('Invalid resource type');
+    }
+
+}
 
 
 const _audioPlayer = audioPlayer;

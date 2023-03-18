@@ -3,9 +3,9 @@ import { joinVoiceChannel, createAudioPlayer } from '@discordjs/voice';
 import { audioPlayer } from '../../functions/controlMusic.js';
 
 const channelId = "1059562088638455878";
-const url = "https://www.youtube.com/watch?v=zEUEyDs0oKo";
+const url = "./assets/tropicana/tropicana.ogg";
 
-const audio = new audioPlayer({ player: createAudioPlayer(), url: url });
+const audio = new audioPlayer({ player: createAudioPlayer(), url: url, type: 'file' });
 
 const log = (message) => {
     if (typeof message === 'object') message = JSON.stringify(message);
