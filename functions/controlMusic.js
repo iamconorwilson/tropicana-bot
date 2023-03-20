@@ -13,6 +13,15 @@ class audioPlayer {
 
     setConnection(connection) {
         this.connection = connection;
+
+        //fix for dropped audio
+        connection.on('stateChange', (oldState, newState) => {
+            const oldNetworking = Reflect.get(oldState, 'networking');
+            const newNetworking = Reflect.get(newState, 'networking');
+            
+            oldNetworking?.off('stateChange', networkStateChangeHandler);
+            newNetworking?.on('stateChange', networkStateChangeHandler);
+        });
     }
 
     async controlMusic(state) {
@@ -52,6 +61,11 @@ function resourceCreate(resource, type) {
     }
 
 }
+
+const networkStateChangeHandler = (oldNetworkState, newNetworkState) => {
+    const newUdp = Reflect.get(newNetworkState, 'udp');
+    clearInterval(newUdp?.keepAliveInterval);
+  }
 
 
 const _audioPlayer = audioPlayer;
