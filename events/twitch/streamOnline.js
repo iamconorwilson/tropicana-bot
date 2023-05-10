@@ -21,4 +21,9 @@ async function sendMessage(discord, event) {
 
     const channel = discord.channels.cache.get(channelId) || await discord.channels.fetch(channelId)
     channel.send(`<@&${liveRoleId}> ${event.broadcasterDisplayName} is live on Twitch! https://twitch.tv/${event.broadcasterName}`);
+
+    //crosspost message
+    const message = await channel.messages.fetch({ limit: 1 });
+    message.first().crosspost();
+    
 }
