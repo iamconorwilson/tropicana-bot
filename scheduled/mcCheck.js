@@ -44,7 +44,7 @@ class Task {
         if (players.startsWith('There are 0')) {
             this.check++;
             
-            if (this.check < 1) {
+            if (this.check < 2) {
                 log('Server is empty, will shut down soon');
                 await rcon.end();
                 return;
@@ -52,6 +52,7 @@ class Task {
 
             log('Server is empty, shutting down');
             await rcon.send('stop');
+            this.check = 0;
             
             rcon.on('end', async () => {
                 log('Server has stopped, stopping EC2 instance');

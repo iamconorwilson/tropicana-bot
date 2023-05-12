@@ -1,10 +1,13 @@
 
+import { EmbedBuilder } from "discord.js";
+
 export async function setupEventListener(context, listener) {
 
     const twitch = context.twitch;
     const discord = context.discord;
 
     const userId = await twitch.users.getMe();
+    // const userId = '864930057';
 
     const subscription = await listener.subscribeToStreamOnlineEvents(userId, e => {
         if (e.type === 'live') {
@@ -19,11 +22,27 @@ async function sendMessage(discord, event) {
     const channelId = '1073691933295267992';
     const liveRoleId = '1105765271479779408';
 
+    const stream = await event.getStream();
+    const user = await event.getBroadcaster();
+
     const channel = discord.channels.cache.get(channelId) || await discord.channels.fetch(channelId)
-    channel.send(`<@&${liveRoleId}> ${event.broadcasterDisplayName} is live on Twitch! https://twitch.tv/${event.broadcasterName}`);
+
+    //send embed response and mention role
+    channel.send({ content: `<@&${liveRoleId}>`, embeds: [response(stream, user)] });
 
     //crosspost message
     const message = await channel.messages.fetch({ limit: 1 });
     message.first().crosspost();
     
+}
+
+const response = function (stream, user) {
+    return new EmbedBuilder()
+    .setColor(0xff8c00)
+        .setTitle(stream.title)
+        .setDescription(`Playing ${stream.gameName}`)
+        .setURL(`https://twitch.tv/${user.name}`)
+        .setAuthor({ name: `${user.displayName} is live now on Twitch!`, iconURL: `${user.profilePictureUrl}`, url: `https://twitch.tv/${user.name}` })
+        .setImage(stream.getThumbnailUrl(1280, 720))
+        .setTimestamp();
 }
