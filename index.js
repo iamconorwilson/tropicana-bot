@@ -7,11 +7,11 @@ import { scheduleTasks } from './functions/scheduleTasks.js';
 const context = await auth();
     
 //set up event listeners
-setupDiscordListeners(context.discord);
+// setupDiscordListeners(context.discord);
 setupTwitchListeners(context);
 
-//register commands
-registerCommands(context);
+// //register commands
+// registerCommands(context);
 
-//schedule tasks
-scheduleTasks(context);
+// //schedule tasks
+// scheduleTasks(context);
