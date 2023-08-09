@@ -6,10 +6,9 @@ export async function setupEventListener(context, listener) {
     const twitch = context.twitch;
     const discord = context.discord;
 
-    const userId = await twitch.users.getMe();
-    // const userId = '864930057';
-
-    const subscription = await listener.subscribeToStreamOnlineEvents(userId, e => {
+    const userId = process.env.TWITCH_USER_ID;
+    
+    const subscription = await listener.onStreamOnline(userId, e => {
         if (e.type === 'live') {
             sendMessage(discord, e);
         }

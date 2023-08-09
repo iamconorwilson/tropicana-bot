@@ -7,7 +7,7 @@ export async function setupTwitchListeners(context) {
     const twitch = context.twitch;
 
     const listener = new EventSubWsListener({ apiClient: twitch });
-    await listener.start();
+    listener.start();
 
     //remove any existing subscriptions
     const subscriptions = await twitch.eventSub.getSubscriptions();
