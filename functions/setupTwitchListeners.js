@@ -1,4 +1,4 @@
-import { readdirSync } from 'fs';
+import { readdir } from 'fs';
 import { resolve } from 'path';
 import { EventSubWsListener } from '@twurple/eventsub-ws';
 
@@ -6,26 +6,18 @@ export async function setupTwitchListeners(context) {
 
     const twitch = context.twitch;
 
-    const listener = new EventSubWsListener({
-        apiClient: twitch,
-        logger: {
-		    minLevel: 'debug'
-        }
-    });
-
-    console.log('Set up Twitch listener: ', listener)
+    const listener = new EventSubWsListener({ apiClient: twitch });
+    await listener.start();
 
     //remove any existing subscriptions
-    // const subscriptions = await twitch.eventSub.getSubscriptions();
+    const subscriptions = await twitch.eventSub.getSubscriptions();
 
-    // subscriptions.data.map(async subscription => {
-    //     console.log(`Deleting Twitch subscription: ${subscription.id}`);
-    //     await twitch.eventSub.deleteSubscription(subscription.id);
-    // });
+    subscriptions.data.map(async subscription => {
+        console.log(`Deleting Twitch subscription: ${subscription.id}`);
+        await twitch.eventSub.deleteSubscription(subscription.id);
+    });
 
-
-    readdirSync(resolve('./events/twitch'), (err, files) => {
-        console.log('setting up event listeners')
+    readdir(resolve('./events/twitch'), (err, files) => {
         if (err) return console.error(err);
         files.forEach(async file => {
             if (!file.endsWith('.js')) return;
@@ -34,15 +26,4 @@ export async function setupTwitchListeners(context) {
             event.setupEventListener(context, listener);
         });
     });
-
-    console.log('starting listener')
-
-    try {
-        await listener.start();
-        console.log(listener)
-    } catch (e) {
-        console.log(e);
-    }
-    
-    
 }

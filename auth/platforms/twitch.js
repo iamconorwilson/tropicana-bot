@@ -7,8 +7,8 @@ dotenv.config()
 
 
 export async function setupAuth() {
-    const clientId = process.env.TWITCH_CLIENT_ID;
-    const clientSecret = process.env.TWITCH_CLIENT_SECRET;
+    const clientId = 'oacxujrtn9pykokh9bmsklj04p781r';
+    const clientSecret = 'i1wsjofkmn9hu3m4nkdreegzij7gpi';
     const tokenData = JSON.parse(await fs.readFile('./auth/data/twitch.json', 'UTF-8'));
     const authProvider = new RefreshingAuthProvider(
         {
@@ -16,11 +16,10 @@ export async function setupAuth() {
             clientSecret,
             onRefresh: async newTokenData => await fs.writeFile('./auth/data/twitch.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
         },
-        tokenData,
-        
+        tokenData
     );
 
-    const client = new ApiClient({ authProvider: authProvider, logger: {minLevel: 'debug'} });
+    const client = new ApiClient({ authProvider });
     
     let user = await client.users.getMe();
 
