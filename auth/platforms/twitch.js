@@ -18,7 +18,7 @@ export async function setupAuth() {
         }
     );
 
-    authProvider.onRefresh(async (newTokenData) => await fs.writeFile(`./auth/data/twitch.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8'));
+    authProvider.onRefresh(async (userId, newTokenData) => await fs.writeFile(`./auth/data/twitch.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8'));
 
     await authProvider.addUserForToken(tokenData);
 

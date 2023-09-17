@@ -24,7 +24,9 @@ async function sendMessage(discord, event) {
     const stream = await event.getStream();
     const user = await event.getBroadcaster();
 
-    const channel = discord.channels.cache.get(channelId) || await discord.channels.fetch(channelId)
+    const channel = discord.channels.cache.get(channelId) || await discord.channels.fetch(channelId);
+
+    console.log(`[Twitch] ${user.displayName} is live now on Twitch!`);
 
     //send embed response and mention role
     channel.send({ content: `<@&${liveRoleId}>`, embeds: [response(stream, user)] });
