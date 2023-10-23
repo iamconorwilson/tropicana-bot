@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 dotenv.config()
 
 export async function setupAuth() {
-    const client = new Client({ intents: [GatewayIntentBits.GuildVoiceStates] });
+    const client = new Client({ intents: [GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildScheduledEvents] });
 
     const TOKEN = process.env.DISCORD_CLIENT_TOKEN
     const STATUS = "🌴 Club Tropicana 🌴"

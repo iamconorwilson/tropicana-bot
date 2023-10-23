@@ -15,13 +15,16 @@ const log = (message) => {
 let connection;
 
 export function setupEventListener(client) {
-    client.on('voiceStateUpdate', async (oldState, newState) => {
+
+    const { discord } = client;
+
+    discord.on('voiceStateUpdate', async (oldState, newState) => {
         // tropicana.js
         if (newState.channelId === channelId || oldState.channelId === channelId) {
-            const channel = client.channels.cache.get(channelId) || await client.channels.fetch(channelId)
+            const channel = discord.channels.cache.get(channelId) || await discord.channels.fetch(channelId)
             if (!channel) return log({ status: 'error', message: 'Channel not found!' });
             //if bot action, return
-            if (newState.id === client.user.id) return;
+            if (newState.id === discord.user.id) return;
             //if audio is playing and bot is not alone in channel, return
             if (audio.isPlaying() && channel.members.size > 1) return;
 

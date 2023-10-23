@@ -15,7 +15,7 @@ app.get('/auth', (req, res) => {
     const clientId = process.env.TWITCH_CLIENT_ID;
   
     res.redirect(
-      `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=user:read:email`
+      `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=user:read:email%20channel:manage:schedule`
     );
 });
   
